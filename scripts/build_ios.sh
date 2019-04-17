@@ -12,7 +12,7 @@ cd build_ios/
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/gflags/ \
-      -DIOS_PLATFORM=OS64 
+      -DIOS_PLATFORM=OS 
 
 make -j12 install
 
@@ -29,7 +29,7 @@ cmake .. \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/glog/ \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DBUILD_TESTING=OFF \
-      -DIOS_PLATFORM=OS64 
+      -DIOS_PLATFORM=OS 
 
 make -j12 install
 
@@ -48,11 +48,19 @@ cmake .. \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/eigen/ \
       -DBUILD_TESTING=OFF \
       -DCMAKE_Fortran_COMPILER='' \
-      -DIOS_PLATFORM=OS64 
+      -DIOS_PLATFORM=OS 
 
 make -j12 install
 
 cd ../..
+
+# Build SuiteSparse
+git clone https://github.com/mortennobel/SuiteSparse_Apple.git
+cd SuiteSparse_Apple
+./build_ios_lib.sh
+./install_ios_lib.sh
+
+cd ..
 
 # Build Ceres-Solver
 git clone https://github.com/ceres-solver/ceres-solver.git
@@ -71,7 +79,7 @@ cmake .. \
       -DEIGEN_INCLUDE_DIR=../../usr/eigen/include/eigen3/ \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DGLOG_INCLUDE_DIR==../../usr/glog/include/ \
-      -DIOS_PLATFORM=OS64 
+      -DIOS_PLATFORM=OS  
 
 make -j12 install
 
@@ -113,44 +121,141 @@ cmake .. \
       -DOPENEXR_BUILD_SHARED=OFF \
       -DBUILD_ILMBASE_STATIC=ON \
       -DOPENEXR_TARGET_SUFFIX= \
-      -DIOS_PLATFORM=OS64 
+      -DIOS_PLATFORM=OS 
 
 make -j12 install
 
 cd ../..
 
+# Build Boost
+git clone https://github.com/faithfracture/Apple-Boost-BuildScript.git
+cd Apple-Boost-BuildScript
+./boost.sh  -ios \
+            --ios-sdk 12.2 \
+            --min-ios-version 8.0 \
+            --boost-version 1.69.0 \
+            --boost-libs "exception filesystem regex thread"
+
+cd ../..
+#
 
 # Build OpenImageIO
 git clone https://github.com/OpenImageIO/oiio.git
 cd oiio
 mkdir build_ios
 cd build_ios/
-
+# `pwd`/../../usr/openexr/lib/libIex-2_3_s.a
+# `pwd`/../../usr/openexr/lib/libIexMath-2_3_s.a
+# `pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a
+# `pwd`/../../usr/openexr/lib/libIlmImfUtil-2_3_s.a
+# `pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a
+# `pwd`/../../usr/openexr/lib/libImath-2_3_s.a 
+      
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/oiio/ \
       -DBUILD_TESTING=OFF \
-      -DTIFF_LIBRARY=../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/lib \
-      -DTIFF_INCLUDE_DIR=../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/include \
-      -DPNG_LIBRARY=../../libtiff-ios//libpng-1.6.34/arm-apple-darwin64/lib \
-      -DPNG_PNG_INCLUDE_DIR=../../libtiff-ios//libpng-1.6.34/arm-apple-darwin64/include \
-      -DILMBASE_INCLUDE_DIR=../../usr/openexr/include/ \
-      -DOPENEXR_INCLUDE_DIR=../../usr/openexr/include/ \
-      -DIOS_PLATFORM=OS64 
+      -DTIFF_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libtiff.a \
+      -DTIFF_INCLUDE_DIR=`pwd`/../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/include \
+      -DPNG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libpng.a \
+      -DPNG_PNG_INCLUDE_DIR=`pwd`/../../libtiff-ios//libpng-1.6.34/arm-apple-darwin64/include \
+      -DJPEG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libjpeg.a \
+      -DJPEG_INCLUDE_DIR=`pwd`/../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include \
+      -DILMBASE_INCLUDE_DIR=`pwd`/../../usr/openexr/include/ \
+      -DOPENEXR_INCLUDE_DIR=`pwd`/../../usr/openexr/include/ \
+      -DOPENEXR_LIBRARIES=`pwd`/../../usr/openexr/lib/libHalf-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIex-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a \
+      -DILMBASE_LIBRARIES=`pwd`/../../usr/openexr/lib/libHalf-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIex-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a \
+      -DBOOST_CUSTOM=ON \
+      -DBoost_VERSION=106900 \
+      -DBoost_INCLUDE_DIRS=`pwd`/../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/include/ \
+      -DBoost_LIBRARY_DIRS=`pwd`/../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/lib/ \
+      -DBoost_LIBRARIES=-lboost_filesystem\;-lboost_thread\;-lboost_exception\;-lboost_system\;-lboost_regex\;-lboost_atomic \
+      -DUSE_QT=OFF \
+      -DGIT_EXECUTABLE=/usr/bin/git \
+      -DBUILD_MISSING_ROBINMAP=ON \
+      -DBUILD_ROBINMAP_FORCE=OFF \
+      -DROBINMAP_GIT_REPOSITORY="https://github.com/Tessil/robin-map.git" \
+      -DROBINMAP_INSTALL_DIR=robin-map \
+      -DUSE_PYTHON=OFF \
+      -DSTOP_ON_WARNING=OFF \
+      -DBUILD_DOCS=OFF \
+      -DVERBOSE=ON \
+      -DENABLE_ARC=0 \
+      -DBUILDSTATIC=ON \
+      -DUSE_STD_REGEX_EXITCODE:INTERNAL=0 \
+      -DOIIO_BUILD_TESTS=OFF \
+      -DIOS_PLATFORM=OS 
 
+make -j12 install
 
-# Build TheiaSfM
+cd ../..
 
+# Build RocksDB
+git clone https://github.com/facebook/rocksdb.git
+cd rocksdb
 mkdir build_ios
-cd build_ios/
+cd build_ios
 
-sed -i .bac 's/SuiteSparse/EigenSparse/g' ../CMakeLists.txt
+sed -i .bac 's/set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")/\#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")/g' ../CMakeLists.txt
+sed -i .bac 's/set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")/\#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")/g' ../CMakeLists.txt
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
+      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/rocksdb/ \
+      -DWITH_TESTS=OFF \
+      -DWITH_TOOLS=OFF \
+      -DIOS_PLATFORM=OS 
+
+make -j12 install
+
+cd ../..
+
+# Build TheiaSfM
+
+cd TheiaSfM/libraries/optimo/
+mkdir build_ios
+cd build_ios
+
+cmake .. \
+      -DCMAKE_TOOLCHAIN_FILE=../../../../ios-cmake/ios.toolchain.cmake \
+      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../../../usr/optimo/ \
+      -DCMAKE_MODULE_PATH=`pwd`/../../../cmake/ \
+      -DIOS_PLATFORM=OS
+
+make -j12 install
+
+cd ../../../..
+
+cd TheiaSfM/
+mkdir build_ios
+cd build_ios/
+
+#sed -i .bac 's/SuiteSparse/EigenSparse/g' ../CMakeLists.txt
+#-DCMAKE_CXX_FLAGS="-I`pwd`/../../usr/openexr/include/ -I`pwd`/../../suitesparse/CHOLMOD/Include" \
+      
+      #-DSUITESPARSE_CHECK_INCLUDE_DIRS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/include/ \
+cmake .. \
+      -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
+      -DIOS_DEPLOYMENT_TARGET=11.0 \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/theia/ \
       -DCERES_INCLUDE_DIR=../../usr/ceres-solver/include/ \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
-      -DGLOG_INCLUDE_DIR==../../usr/glog/include/ \
-      -DIOS_PLATFORM=OS64 
+      -DGLOG_INCLUDE_DIR=../../usr/glog/include/ \
+      -DGLOG_LIBRARY=../../usr/glog/lib/libglog.a \
+      -DOPENEXR_INCLUDE_DIR=../../usr/openexr/include/ \
+      -DOPENIMAGEIO_INCLUDE_DIR=../../usr/oiio/include/ \
+      -DOPENIMAGEIO_LIBRARY=../../usr/oiio/lib/libOpenImageIO.a \
+      -DROCKSDB_INCLUDE_DIR=../../usr/rocksdb/include/ \
+      -DROCKSDB_LIBRARY=../../usr/rocksdb/lib/librocksdb.a \
+      -DROCKSDB_STATIC_LIBRARIES=../../usr/rocksdb/lib/librocksdb.a \
+      -DJPEG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libjpeg.a \
+      -DJPEG_INCLUDE_DIR=`pwd`/../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include \
+      -DOPTIMO_INCLUDE_DIR=../../usr/optimo/ \
+      -DCMAKE_CXX_STANDARD=17 \
+      -DBUILD_TESTING=OFF \
+      -DSUITESPARSE_INCLUDE_DIR_HINTS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/include/ \
+      -DSUITESPARSE_LIBRARY_DIR_HINTS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/lib/ \
+      -DCMAKE_CXX_FLAGS="-I`pwd`/../../usr/openexr/include/" \
+      -DIOS_PLATFORM=OS64
 
+make -j12 install
