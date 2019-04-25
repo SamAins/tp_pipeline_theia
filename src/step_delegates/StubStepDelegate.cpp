@@ -36,7 +36,7 @@ void StubStepDelegate::executeStep(tp_pipeline::StepDetails* stepDetails,
 //##################################################################################################
 void StubStepDelegate::fixupParameters(tp_pipeline::StepDetails* stepDetails) const
 {
-  stepDetails->setOutputNames({"Output image"});
+  stepDetails->setOutputNames({"Output data"});
 
   std::vector<tp_utils::StringID> validParams;
   //  const auto& parameters = stepDetails->parameters();
