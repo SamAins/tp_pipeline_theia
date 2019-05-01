@@ -70,6 +70,8 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=`realpath ../../usr` -DBUILD_SHARED_LIBS=ON -D
 make -j`nproc` VERBOSE=1
 make install
 
+cd ../../..
+
 ```
 
 ## iOS Build
