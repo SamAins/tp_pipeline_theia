@@ -5,7 +5,31 @@ This module adds the Theia Structure from Motion library to tp_pipeline. To use 
 
 ### Dependencies
 ```
-dnf install -y eigen3-devel ceres-solver ceres-solver-devel OpenImageIO OpenImageIO-devel gflags gflags-devel blas blas-devel lapack lapack-devel suitesparse suitesparse-devel libjpeg-turbo libjpeg-turbo-devel hdf5 hdf5-devel gtest gtest-devel freeglut freeglut-devel OpenEXR OpenEXR-devel cmake
+dnf update -y
+dnf install -y eigen3-devel \
+               ceres-solver \
+               ceres-solver-devel \
+               OpenImageIO \
+               OpenImageIO-devel \
+               gflags \
+               gflags-devel \
+               blas \
+               blas-devel \
+               lapack \
+               lapack-devel \
+               suitesparse \
+               suitesparse-devel \
+               libjpeg-turbo \
+               libjpeg-turbo-devel \
+               hdf5 \
+               hdf5-devel \
+               gtest \
+               gtest-devel \
+               freeglut \
+               freeglut-devel \
+               OpenEXR \
+               OpenEXR-devel \
+               cmake
 ```
 
 These currently don't work on my Xeon E5v2 or on Fedora 27:
