@@ -51,6 +51,8 @@ make -j`nproc` shared_lib
 export INSTALL_PATH=`realpath ../usr/`
 make -j`nproc` install
 
+cd ../..
+
 ```
 
 ### Build
