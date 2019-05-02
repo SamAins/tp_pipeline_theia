@@ -65,7 +65,12 @@ cd theia-build
 cp /usr/lib64/cmake/Ceres/FindGflags.cmake ../cmake/FindGflags.cmake
 
 #RocksDB issue on Fedora 29 Xeon E5 v2
-cmake -DCMAKE_INSTALL_PREFIX:PATH=`realpath ../../usr` -DBUILD_SHARED_LIBS=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DROCKSDB_INCLUDE_DIR:PATH=/opt/tom/rocksdb/usr/include -DROCKSDB_STATIC_LIBRARIES=/opt/tom/rocksdb/usr/lib/librocksdb.so ..
+cmake -DCMAKE_INSTALL_PREFIX:PATH=`realpath ../../usr` \
+      -DBUILD_SHARED_LIBS=ON \
+      -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+      -DROCKSDB_INCLUDE_DIR:PATH=`realpath ../../rocksdb/usr/include` \
+      -DROCKSDB_STATIC_LIBRARIES=`realpath ../../rocksdb/usr/lib/librocksdb.so` \
+      ..
 
 make -j`nproc` VERBOSE=1
 make install
