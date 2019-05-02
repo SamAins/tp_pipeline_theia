@@ -68,8 +68,8 @@ cp /usr/lib64/cmake/Ceres/FindGflags.cmake ../cmake/FindGflags.cmake
 cmake -DCMAKE_INSTALL_PREFIX:PATH=`realpath ../../usr` \
       -DBUILD_SHARED_LIBS=ON \
       -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-      -DROCKSDB_INCLUDE_DIR:PATH=`realpath ../../rocksdb/usr/include` \
-      -DROCKSDB_STATIC_LIBRARIES=`realpath ../../rocksdb/usr/lib/librocksdb.so` \
+      -DROCKSDB_INCLUDE_DIR:PATH=`realpath ../../../rocksdb/usr/include` \
+      -DROCKSDB_STATIC_LIBRARIES=`realpath ../../../rocksdb/usr/lib/librocksdb.so` \
       ..
 
 make -j`nproc` VERBOSE=1
