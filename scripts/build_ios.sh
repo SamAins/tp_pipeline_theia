@@ -24,6 +24,9 @@ cd glog
 mkdir build_ios
 cd build_ios/
 
+#Stack trace seems to be broken on iOS now?
+sed -i .bac 's/STACKTRACE_H/STACKTRACE_H_OFF/g' ../src/utilities.cc
+
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/glog/ \
