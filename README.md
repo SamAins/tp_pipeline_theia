@@ -82,7 +82,10 @@ cd ../../..
 ## Building Theia iOS
 Run the following script in the directory where you want to perform the build.
 ```
-scripts/build_ios.sh
+mkdir theia
+cd theia
+git clone https://github.com/tdp-libs/tp_pipeline_theia.git
+./tp_pipeline_theia/scripts/build_ios.sh
 
 ```
 
