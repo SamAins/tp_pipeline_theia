@@ -60,6 +60,7 @@ cd ../..
 # Build SuiteSparse
 git clone https://github.com/mortennobel/SuiteSparse_Apple.git
 cd SuiteSparse_Apple
+sed -i .bac 's/libstdc++/libc++/g' SuiteSparse_config/SuiteSparse_config_ios.mk
 ./build_ios_lib.sh
 ./install_ios_lib.sh
 
