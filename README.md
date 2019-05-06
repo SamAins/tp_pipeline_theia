@@ -79,7 +79,7 @@ cd ../../..
 
 ```
 
-## iOS Build
+## Building Theia iOS
 Run the following script in the directory where you want to perform the build.
 ```
 scripts/build_ios.sh
