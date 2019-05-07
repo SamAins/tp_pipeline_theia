@@ -160,7 +160,7 @@ cd Apple-Boost-BuildScript
             --boost-version 1.69.0 \
             --boost-libs "exception filesystem regex thread"
 
-cd ../..
+cd ..
 
 
 # Build OpenImageIO
