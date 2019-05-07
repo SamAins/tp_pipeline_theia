@@ -3,6 +3,7 @@ set -e
 # Get iOS CMake we will use this for building the rest of the libraries.
 git clone https://github.com/leetal/ios-cmake.git
 
+
 # Get and build gflags
 git clone https://github.com/gflags/gflags.git
 cd gflags/
@@ -11,12 +12,13 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/gflags/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/gflags/` \
       -DIOS_PLATFORM=OS 
 
 make -j12 install
 
 cd ../..
+
 
 # Get and build glog
 git clone https://github.com/google/glog.git
@@ -29,7 +31,7 @@ sed -i .bac 's/STACKTRACE_H/STACKTRACE_H_OFF/g' ../src/utilities.cc
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/glog/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/glog/` \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DBUILD_TESTING=OFF \
       -DIOS_PLATFORM=OS 
@@ -48,14 +50,22 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/eigen/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/eigen/` \
       -DBUILD_TESTING=OFF \
       -DCMAKE_Fortran_COMPILER='' \
       -DIOS_PLATFORM=OS 
 
 make -j12 install
 
+cd `grealpath ../../usr/eigen/share/eigen3/cmake/`
+ln -snf Eigen3Config.cmake        EigenConfig.cmake
+ln -snf Eigen3ConfigVersion.cmake EigenConfigVersion.cmake
+ln -snf Eigen3Targets.cmake       EigenTargets.cmake
+ln -snf UseEigen3.cmake           UseEigen.cmake
+cd -
+
 cd ../..
+
 
 # Build SuiteSparse
 git clone https://github.com/mortennobel/SuiteSparse_Apple.git
@@ -65,6 +75,7 @@ sed -i .bac 's/libstdc++/libc++/g' SuiteSparse_config/SuiteSparse_config_ios.mk
 #./install_ios_lib.sh
 
 cd ..
+
 
 # Build Ceres-Solver
 git clone https://github.com/ceres-solver/ceres-solver.git
@@ -77,18 +88,19 @@ sed -i .bac 's/-Qunused-arguments -mllvm -inline-threshold=600//g' ../CMakeLists
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DIOS_DEPLOYMENT_TARGET=9.0 \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/ceres-solver/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/ceres-solver/` \
       -DBUILD_TESTING=OFF \
       -DEXPORT_BUILD_DIR=ON \
       -DSUITESPARSE=OFF \
-      -DEIGEN_INCLUDE_DIR=`pwd`/../../usr/eigen/include/eigen3/ \
-      -DGFLAGS_INCLUDE_DIR=`pwd`/../../usr/gflags/include/ \
-      -DGLOG_INCLUDE_DIR==`pwd`/../../usr/glog/include/ \
+      -DEIGEN_INCLUDE_DIR=`grealpath ../../usr/eigen/include/eigen3/` \
+      -DGFLAGS_INCLUDE_DIR=`grealpath ../../usr/gflags/include/` \
+      -DGLOG_INCLUDE_DIR==`grealpath ../../usr/glog/include/` \
       -DIOS_PLATFORM=OS  
 
 make -j12 install
 
 cd ../..
+
 
 # Build libtiff etc...
 git clone https://github.com/ashtons/libtiff-ios.git
@@ -96,6 +108,7 @@ cd libtiff-ios
 make
 
 cd ..
+
 
 # Build OpenEXR
 git clone https://github.com/tompaynter03/openexr.git
@@ -116,7 +129,7 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/openexr/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/openexr/` \
       -DOPENEXR_BUILD_PYTHON_LIBS=OFF \
       -DOPENEXR_BUILD_VIEWERS=OFF \
       -DOPENEXR_BUILD_TESTS=OFF \
@@ -132,6 +145,7 @@ make -j12 install
 
 cd ../..
 
+
 # Build Boost
 git clone https://github.com/faithfracture/Apple-Boost-BuildScript.git
 cd Apple-Boost-BuildScript
@@ -142,38 +156,32 @@ cd Apple-Boost-BuildScript
             --boost-libs "exception filesystem regex thread"
 
 cd ../..
-#
+
 
 # Build OpenImageIO
 git clone https://github.com/OpenImageIO/oiio.git
 cd oiio
 mkdir build_ios
 cd build_ios/
-# `pwd`/../../usr/openexr/lib/libIex-2_3_s.a
-# `pwd`/../../usr/openexr/lib/libIexMath-2_3_s.a
-# `pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a
-# `pwd`/../../usr/openexr/lib/libIlmImfUtil-2_3_s.a
-# `pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a
-# `pwd`/../../usr/openexr/lib/libImath-2_3_s.a 
       
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/oiio/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/oiio/` \
       -DBUILD_TESTING=OFF \
-      -DTIFF_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libtiff.a \
-      -DTIFF_INCLUDE_DIR=`pwd`/../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/include \
-      -DPNG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libpng.a \
-      -DPNG_PNG_INCLUDE_DIR=`pwd`/../../libtiff-ios//libpng-1.6.34/arm-apple-darwin64/include \
-      -DJPEG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libjpeg.a \
-      -DJPEG_INCLUDE_DIR=`pwd`/../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include \
-      -DILMBASE_INCLUDE_DIR=`pwd`/../../usr/openexr/include/ \
-      -DOPENEXR_INCLUDE_DIR=`pwd`/../../usr/openexr/include/ \
-      -DOPENEXR_LIBRARIES=`pwd`/../../usr/openexr/lib/libHalf-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIex-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a \
-      -DILMBASE_LIBRARIES=`pwd`/../../usr/openexr/lib/libHalf-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIex-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmThread-2_3_s.a\;`pwd`/../../usr/openexr/lib/libIlmImf-2_3_s.a \
+      -DTIFF_LIBRARY=`grealpath ../../libtiff-ios/dependencies/lib/libtiff.a` \
+      -DTIFF_INCLUDE_DIR=`grealpath ../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/include` \
+      -DPNG_LIBRARY=`grealpath ../../libtiff-ios/dependencies/lib/libpng.a` \
+      -DPNG_PNG_INCLUDE_DIR=`grealpath ../../libtiff-ios//libpng-1.6.34/arm-apple-darwin64/include` \
+      -DJPEG_LIBRARY=`grealpath ../../libtiff-ios/dependencies/lib/libjpeg.a` \
+      -DJPEG_INCLUDE_DIR=`grealpath ../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include` \
+      -DILMBASE_INCLUDE_DIR=`grealpath ../../usr/openexr/include/` \
+      -DOPENEXR_INCLUDE_DIR=`grealpath ../../usr/openexr/include/` \
+      -DOPENEXR_LIBRARIES=`grealpath ../../usr/openexr/lib/libHalf-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIex-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIlmThread-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIlmImf-2_3_s.a` \
+      -DILMBASE_LIBRARIES=`grealpath ../../usr/openexr/lib/libHalf-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIex-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIlmThread-2_3_s.a`\;`grealpath ../../usr/openexr/lib/libIlmImf-2_3_s.a` \
       -DBOOST_CUSTOM=ON \
       -DBoost_VERSION=106900 \
-      -DBoost_INCLUDE_DIRS=`pwd`/../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/include/ \
-      -DBoost_LIBRARY_DIRS=`pwd`/../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/lib/ \
+      -DBoost_INCLUDE_DIRS=`grealpath ../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/include/` \
+      -DBoost_LIBRARY_DIRS=`grealpath ../../Apple-Boost-BuildScript/build/boost/1.69.0/ios/release/prefix/lib/` \
       -DBoost_LIBRARIES=-lboost_filesystem\;-lboost_thread\;-lboost_exception\;-lboost_system\;-lboost_regex\;-lboost_atomic \
       -DUSE_QT=OFF \
       -DGIT_EXECUTABLE=/usr/bin/git \
@@ -195,6 +203,7 @@ make -j12 install
 
 cd ../..
 
+
 # Build RocksDB
 git clone https://github.com/facebook/rocksdb.git
 cd rocksdb
@@ -206,7 +215,7 @@ sed -i .bac 's/set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")/\#set(CMAKE_CXX
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/rocksdb/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/rocksdb/` \
       -DWITH_TESTS=OFF \
       -DWITH_TOOLS=OFF \
       -DIOS_PLATFORM=OS 
@@ -214,6 +223,7 @@ cmake .. \
 make -j12 install
 
 cd ../..
+
 
 # Build TheiaSfM
 
@@ -223,8 +233,8 @@ cd build_ios
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../../../usr/optimo/ \
-      -DCMAKE_MODULE_PATH=`pwd`/../../../cmake/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../../../usr/optimo/` \
+      -DCMAKE_MODULE_PATH=`grealpath ../../../cmake/` \
       -DIOS_PLATFORM=OS
 
 make -j12 install
@@ -234,15 +244,11 @@ cd ../../../..
 cd TheiaSfM/
 mkdir build_ios
 cd build_ios/
-
-#sed -i .bac 's/SuiteSparse/EigenSparse/g' ../CMakeLists.txt
-#-DCMAKE_CXX_FLAGS="-I`pwd`/../../usr/openexr/include/ -I`pwd`/../../suitesparse/CHOLMOD/Include" \
       
-      #-DSUITESPARSE_CHECK_INCLUDE_DIRS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/include/ \
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DIOS_DEPLOYMENT_TARGET=11.0 \
-      -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/theia/ \
+      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/theia/` \
       -DCERES_INCLUDE_DIR=../../usr/ceres-solver/include/ \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DGLOG_INCLUDE_DIR=../../usr/glog/include/ \
@@ -253,14 +259,14 @@ cmake .. \
       -DROCKSDB_INCLUDE_DIR=../../usr/rocksdb/include/ \
       -DROCKSDB_LIBRARY=../../usr/rocksdb/lib/librocksdb.a \
       -DROCKSDB_STATIC_LIBRARIES=../../usr/rocksdb/lib/librocksdb.a \
-      -DJPEG_LIBRARY=`pwd`/../../libtiff-ios/dependencies/lib/libjpeg.a \
-      -DJPEG_INCLUDE_DIR=`pwd`/../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include \
+      -DJPEG_LIBRARY=`grealpath ../../libtiff-ios/dependencies/lib/libjpeg.a` \
+      -DJPEG_INCLUDE_DIR=`grealpath ../../libtiff-ios/jpeg-9a/arm-apple-darwin64/include` \
       -DOPTIMO_INCLUDE_DIR=../../usr/optimo/ \
       -DCMAKE_CXX_STANDARD=17 \
       -DBUILD_TESTING=OFF \
       -DSUITESPARSE_INCLUDE_DIR_HINTS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/include/ \
       -DSUITESPARSE_LIBRARY_DIR_HINTS=/Users/tom/theia/TheiaSfM/build_ios/../../usr/suitesparse/lib/ \
-      -DCMAKE_CXX_FLAGS="-I`pwd`/../../usr/openexr/include/" \
+      -DCMAKE_CXX_FLAGS="-I`grealpath ../../usr/openexr/include/`" \
       -DIOS_PLATFORM=OS64
 
 make -j12 install

@@ -82,7 +82,7 @@ cd ../../..
 ## Building Theia iOS
 Run the following script in the directory where you want to perform the build.
 ```
-brew install wget 
+brew install wget coreutils
 
 mkdir theia
 cd theia
