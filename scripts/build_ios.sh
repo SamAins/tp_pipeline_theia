@@ -1,3 +1,5 @@
+#!/bin/bash 
+
 set -e
 
 # Get iOS CMake we will use this for building the rest of the libraries.
@@ -92,10 +94,11 @@ cmake .. \
       -DBUILD_TESTING=OFF \
       -DEXPORT_BUILD_DIR=ON \
       -DSUITESPARSE=OFF \
-      -DEIGEN_INCLUDE_DIR=`grealpath ../../usr/eigen/include/eigen3/` \
+      -DEigen3_DIR=`grealpath ../../usr/eigen/share/eigen3/cmake/` \
+      -DEigen_DIR=`grealpath ../../usr/eigen/share/eigen3/cmake/` \
       -DGFLAGS_INCLUDE_DIR=`grealpath ../../usr/gflags/include/` \
       -DGLOG_INCLUDE_DIR==`grealpath ../../usr/glog/include/` \
-      -DIOS_PLATFORM=OS  
+      -DIOS_PLATFORM=OS
 
 make -j12 install
 
