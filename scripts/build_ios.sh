@@ -76,6 +76,7 @@ sed -i .bac 's/-Qunused-arguments -mllvm -inline-threshold=600//g' ../CMakeLists
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
+      -DIOS_DEPLOYMENT_TARGET=9.0 \
       -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/../../usr/ceres-solver/ \
       -DBUILD_TESTING=OFF \
       -DEXPORT_BUILD_DIR=ON \
