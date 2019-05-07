@@ -14,7 +14,7 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/gflags/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/gflags/" \
       -DIOS_PLATFORM=OS 
 
 make -j12 install
@@ -33,7 +33,7 @@ sed -i .bac 's/STACKTRACE_H/STACKTRACE_H_OFF/g' ../src/utilities.cc
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/glog/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/glog/" \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DBUILD_TESTING=OFF \
       -DIOS_PLATFORM=OS 
@@ -52,7 +52,7 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/eigen/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/eigen/" \
       -DBUILD_TESTING=OFF \
       -DCMAKE_Fortran_COMPILER='' \
       -DIOS_PLATFORM=OS 
@@ -90,7 +90,7 @@ sed -i .bac 's/-Qunused-arguments -mllvm -inline-threshold=600//g' ../CMakeLists
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DIOS_DEPLOYMENT_TARGET=9.0 \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/ceres-solver/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/ceres-solver/" \
       -DBUILD_TESTING=OFF \
       -DEXPORT_BUILD_DIR=ON \
       -DSUITESPARSE=OFF \
@@ -132,7 +132,7 @@ cd build_ios/
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/openexr/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/openexr/" \
       -DOPENEXR_BUILD_PYTHON_LIBS=OFF \
       -DOPENEXR_BUILD_VIEWERS=OFF \
       -DOPENEXR_BUILD_TESTS=OFF \
@@ -169,7 +169,7 @@ cd build_ios/
       
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/oiio/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/oiio/" \
       -DBUILD_TESTING=OFF \
       -DTIFF_LIBRARY=`grealpath ../../libtiff-ios/dependencies/lib/libtiff.a` \
       -DTIFF_INCLUDE_DIR=`grealpath ../../libtiff-ios/tiff-4.0.9/arm-apple-darwin64/include` \
@@ -218,7 +218,7 @@ sed -i .bac 's/set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")/\#set(CMAKE_CXX
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/rocksdb/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/rocksdb/" \
       -DWITH_TESTS=OFF \
       -DWITH_TOOLS=OFF \
       -DIOS_PLATFORM=OS 
@@ -236,7 +236,7 @@ cd build_ios
 
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../../../ios-cmake/ios.toolchain.cmake \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../../../usr/optimo/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../../../usr`/optimo/" \
       -DCMAKE_MODULE_PATH=`grealpath ../../../cmake/` \
       -DIOS_PLATFORM=OS
 
@@ -251,7 +251,7 @@ cd build_ios/
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DIOS_DEPLOYMENT_TARGET=11.0 \
-      -DCMAKE_INSTALL_PREFIX:PATH=`grealpath ../../usr/theia/` \
+      -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/theia/" \
       -DCERES_INCLUDE_DIR=../../usr/ceres-solver/include/ \
       -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
       -DGLOG_INCLUDE_DIR=../../usr/glog/include/ \
