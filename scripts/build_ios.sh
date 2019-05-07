@@ -168,7 +168,7 @@ git clone https://github.com/OpenImageIO/oiio.git
 cd oiio
 
 
-sed -i .bac 's/find_package (OpenEXR 2.0 REQUIRED)/\#find_package (OpenEXR 2.0 REQUIRED)/g' ../CMakeLists.txt
+sed -i .bac 's/find_package (OpenEXR 2.0 REQUIRED)/\#find_package (OpenEXR 2.0 REQUIRED)/g' ../src/cmake/externalpackages.cmake
 
 
 mkdir build_ios
