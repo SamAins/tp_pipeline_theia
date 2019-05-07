@@ -81,9 +81,9 @@ cmake .. \
       -DBUILD_TESTING=OFF \
       -DEXPORT_BUILD_DIR=ON \
       -DSUITESPARSE=OFF \
-      -DEIGEN_INCLUDE_DIR=../../usr/eigen/include/eigen3/ \
-      -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
-      -DGLOG_INCLUDE_DIR==../../usr/glog/include/ \
+      -DEIGEN_INCLUDE_DIR=`pwd`/../../usr/eigen/include/eigen3/ \
+      -DGFLAGS_INCLUDE_DIR=`pwd`/../../usr/gflags/include/ \
+      -DGLOG_INCLUDE_DIR==`pwd`/../../usr/glog/include/ \
       -DIOS_PLATFORM=OS  
 
 make -j12 install
