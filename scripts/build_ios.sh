@@ -125,6 +125,8 @@ cmake .. \
       -DOPENEXR_BUILD_VIEWERS=OFF \
       -DOPENEXR_BUILD_TESTS=OFF
 
+make -j12
+
 cd ..
 
 mkdir build_ios
