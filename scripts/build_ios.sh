@@ -307,6 +307,7 @@ cmake ../src/theia \
       -DIOS_DEPLOYMENT_TARGET=11.0 \
       -DBUILD_LIB_theia_math=ON \
       -DBUILD_LIB_theia_sfm=ON \
+      -DBUILD_LIB_theia_util=ON \
       -DBUILD_LIB_theia_solvers=ON \
       -DINCLUDE_DIRECTORIES=${INC_DIRS}
 
