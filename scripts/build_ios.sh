@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-set -e
+set -ex
 
 # Get iOS CMake we will use this for building the rest of the libraries.
 git clone https://github.com/leetal/ios-cmake.git
