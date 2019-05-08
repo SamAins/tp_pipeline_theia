@@ -23,22 +23,26 @@ cd ../..
 
 
 # Get and build glog
-git clone https://github.com/google/glog.git
-cd glog
+git clone https://github.com/tompaynter03/miniglog.git
+cd miniglog
 mkdir build_ios
 cd build_ios/
 
 #Stack trace seems to be broken on iOS now?
-sed -i .bac 's/STACKTRACE_H/STACKTRACE_H_OFF/g' ../src/utilities.cc
+#sed -i .bac 's/STACKTRACE_H/STACKTRACE_H_OFF/g' ../src/utilities.cc
 
+#      -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
 cmake .. \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/glog/" \
-      -DGFLAGS_INCLUDE_DIR=../../usr/gflags/include/ \
-      -DBUILD_TESTING=OFF \
+      -DBUILD_SHARED=OFF \
       -DIOS_PLATFORM=OS 
 
 make -j12 install
+
+cd ../../usr/glog/lib/
+ln -snf libminiglog.a libglog.a
+cd -
 
 cd ../..
 
@@ -295,7 +299,9 @@ cmake ../src/theia \
       -DCMAKE_TOOLCHAIN_FILE=../../ios-cmake/ios.toolchain.cmake \
       -DCMAKE_INSTALL_PREFIX:PATH="`grealpath ../../usr`/theia/" \
       -DIOS_DEPLOYMENT_TARGET=11.0 \
+      -DBUILD_LIB_theia_math=ON \
       -DBUILD_LIB_theia_sfm=ON \
+      -DBUILD_LIB_theia_solvers=ON \
       -DINCLUDE_DIRECTORIES=${INC_DIRS}
 
 make -j12 install
