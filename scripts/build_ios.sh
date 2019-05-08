@@ -298,4 +298,4 @@ cmake ../src/theia \
       -DBUILD_LIB_theia_sfm=ON \
       -DINCLUDE_DIRECTORIES=${INC_DIRS}
 
-make -j12
+make -j12 install
