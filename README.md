@@ -25,7 +25,7 @@ Run the following script in the directory where you want to perform the build.
 ```
 mkdir theia
 cd theia
-git clone https://github.com/tdp-libs/tp_pipeline_theia.git
+git clone https://github.com/wrld3d/tp_pipeline_theia.git
 ./tp_pipeline_theia/scripts/build_fedora.sh
 
 ```
@@ -38,7 +38,7 @@ brew install wget coreutils
 
 mkdir theia
 cd theia
-git clone https://github.com/tdp-libs/tp_pipeline_theia.git
+git clone https://github.com/wrld3d/tp_pipeline_theia.git
 ./tp_pipeline_theia/scripts/build_ios.sh
 
 ```
